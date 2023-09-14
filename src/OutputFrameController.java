@@ -77,7 +77,7 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new Bot();
+        this.bot = new Bot(buttons);
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
@@ -357,10 +357,16 @@ public class OutputFrameController {
         int i = botMove[0];
         int j = botMove[1];
 
-        if (!this.buttons[i][j].getText().equals("")) {
-            new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
-            System.exit(1);
-            return;
+        // if (!this.buttons[i][j].getText().equals("")) {
+        //     new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
+        //     System.exit(1);
+        //     return;
+        // }
+
+        while (!this.buttons[i][j].getText().equals("")) {
+            botMove = this.bot.move();
+            i = botMove[0];
+            j = botMove[1];
         }
 
         this.selectedCoordinates(i, j);
