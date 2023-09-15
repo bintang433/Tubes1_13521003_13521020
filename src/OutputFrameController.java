@@ -77,7 +77,7 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new Bot(buttons);
+        this.bot = new Bot(buttons, roundsLeft);
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
@@ -189,6 +189,7 @@ public class OutputFrameController {
 
                 if (isBotFirst) {
                     this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
+                    this.bot.roundPassed();
                     this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
                 }
 
@@ -210,6 +211,7 @@ public class OutputFrameController {
 
                 if (!isBotFirst) {
                     this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
+                    this.bot.roundPassed();
                     this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
                 }
 
@@ -353,21 +355,25 @@ public class OutputFrameController {
     }
 
     private void moveBot() {
-        int[] botMove = this.bot.move();
+        // int[] botMove = this.bot.move();
+        int[] botMove = this.bot.moveMinimax();
+
         int i = botMove[0];
         int j = botMove[1];
 
-        // if (!this.buttons[i][j].getText().equals("")) {
-        //     new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
-        //     System.exit(1);
-        //     return;
-        // }
-
-        while (!this.buttons[i][j].getText().equals("")) {
-            botMove = this.bot.move();
-            i = botMove[0];
-            j = botMove[1];
+        if (!this.buttons[i][j].getText().equals("")) {
+            new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
+            System.exit(1);
+            return;
         }
+
+        // while (!this.buttons[i][j].getText().equals("")) {
+        //     botMove = this.bot.move();
+        //     // int[] botMove = this.bot.moveMinimax();
+
+        //     i = botMove[0];
+        //     j = botMove[1];
+        // }
 
         this.selectedCoordinates(i, j);
     }

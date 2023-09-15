@@ -15,15 +15,23 @@ import javafx.scene.layout.RowConstraints;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class Bot {
 
     private Button[][] buttons;
+    private int roundsLeft;
 
-    public Bot(Button[][] buttons) {
+    public Bot(Button[][] buttons, int roundsLeft) {
         this.buttons = buttons;
+        this.roundsLeft = roundsLeft;
     }
+
+    public void roundPassed() {
+        this.roundsLeft--;
+    }
+
     public int[] move() {
         // create random move
         int x = (int) (Math.random()*8);
@@ -48,6 +56,21 @@ public class Bot {
             }
         }
         return new int[]{x, y};
+    }
+
+    public int[] moveMinimax() {
+
+        String[][] copyButtons = new String[8][8];
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                copyButtons[i][j] = this.buttons[i][j].getText();
+            }
+        }
+        ArrayList<Integer> bestMove = findBestMove(copyButtons);
+
+        return new int[]{bestMove.get(0), bestMove.get(1)};
     }
 
     public ArrayList<ArrayList<Integer>> modifiedButtons(int x, int y, String opp)
@@ -162,6 +185,141 @@ public class Bot {
         System.out.printf("%d, %d", buttonCoordinates.get(0).get(0), M);
         System.out.println();
         return (buttonCoordinates.get(0).get(0) - M*2 - 1);
+    }
+    public int minimax(String[][] copyButtons, int curDepth, boolean maximize, int alpha, int beta)
+    {
+        int curVal = utility(copyButtons);
+        System.out.println(curVal);
+        System.out.printf("roundsLeft = %d, curDepth = %d\n", roundsLeft, curDepth);
+        if(curDepth == (roundsLeft - 1))
+        return curVal;
+
+        if(maximize)
+        {
+            int maxVal = -999;
+            for(int i = 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    if (copyButtons[i][j].equals(""))
+                    {
+                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, "X");
+                        for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                        {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
+                        }
+                        maxVal = Math.max(maxVal, minimax(copyButtons, curDepth+1, !maximize, alpha, beta));
+                        for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                        {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
+                        }
+                        copyButtons[i][j] = "";
+
+                        alpha = Math.max(alpha, maxVal);
+                        if (beta <= alpha) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return maxVal;
+        }
+        else
+        {
+            int minVal = 999;
+            for(int i = 0; i < 8; i++)
+            {
+                for(int j = 0; j < 8; j++)
+                {
+                    // System.out.println("pipi");
+                    if(copyButtons[i][j].equals(""))
+                    {
+                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, "O");
+                        for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                        {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
+                        }
+                        minVal = Math.min(minVal, minimax(copyButtons, curDepth+1, !maximize, alpha, beta));
+                        for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                        {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
+                        }
+                        copyButtons[i][j] = "";
+
+                        alpha = Math.min(alpha, minVal);
+                        if (beta <= alpha) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return minVal;
+        }
+    }
+
+    public ArrayList<Integer> findBestMove(String[][] copyButtons)
+    {   
+        int bestValue = -999;
+        int x = -1;
+        int y = -1;
+
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (copyButtons[i][j].equals(""))
+                {
+                    // copyButtons[i][j] = "O";
+                    ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, "X");
+                    for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                    {
+                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
+                    }
+                    int tempValue = minimax(copyButtons, 0, false, -999, 999);
+                    for(int k = 1; k < changedButtons.get(0).get(0); k++)
+                    {
+                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
+                    }
+                    copyButtons[i][j] = "";
+
+                    if (tempValue>bestValue)
+                    {
+                        x = i;
+                        y = j;
+                        bestValue = tempValue;
+                    }
+                }
+            }
+        }
+
+        ArrayList<Integer> bestMove = new ArrayList<>();
+        bestMove.add(x);
+        bestMove.add(y);
+        return bestMove;
+    }
+
+    public int utility(String[][] buttonState)
+    {
+        int X = 0;
+        int O = 0;
+        for(int i = 0; i < 8; i++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                if (buttonState[i][j].equals("X"))
+                {
+                    X++;
+                }
+                else if(buttonState[i][j].equals("O"))
+                {
+                    O++;
+                }
+            }
+        }
+        System.out.printf("O = %d, X = %d\n", O, X);
+        return O-X;
     }
 
 }
