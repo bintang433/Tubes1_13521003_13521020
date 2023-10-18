@@ -40,25 +40,27 @@ public class Bot {
         return roundsLeft;
     }
 
+
     public int[] move() {
-        // create random move
-        int x = (int) (Math.random()*8);
-        int y = (int) (Math.random()*8);
-        // int x = ;
-        // int y;
-        int objFuncValue = -999;
-        for(int i = 0; i < 8; i++)
-        {
-            for(int j = 0; j < 8; j++)
-            {
-                if(buttons[i][j].getText().equals(""))
-                {
-                    x = i;
-                    y = j;
-                }
-            }
-        }
-        return new int[]{x, y};
+        // // create random move
+        // int x = (int) (Math.random()*8);
+        // int y = (int) (Math.random()*8);
+        // // int x = ;
+        // // int y;
+        // int objFuncValue = -999;
+        // for(int i = 0; i < 8; i++)
+        // {
+        //     for(int j = 0; j < 8; j++)
+        //     {
+        //         if(buttons[i][j].getText().equals(""))
+        //         {
+        //             x = i;
+        //             y = j;
+        //         }
+        //     }
+        // }
+        // return new int[]{x, y};
+        return new int[]{0, 0};
     }
 
 
@@ -120,44 +122,44 @@ public class Bot {
         return buttonCoordinates;
     }
 
-    public int enemyPossibleMove(int x, int y)
-    {
-        int M = 1;
-        if (x != 0)
-        {
-            if (buttons[x-1][y].getText().equals(""))
-            {
-                M += (modifiedButtons(x-1, y, "O").get(0).get(0) - 1);
-                System.out.printf("aaaa %d\n", M);
-            }
-        }
-        if (x != 7)
-        {
-            if (buttons[x+1][y].getText().equals(""))
-            {
-                M += (modifiedButtons(x+1, y, "O").get(0).get(0) - 1);
-                System.out.printf("bbbb %d\n", M);
-            }
-        }
-        if (y != 0)
-        {
-            if (buttons[x][y-1].getText().equals(""))
-            {
-                M += (modifiedButtons(x, y-1, "O").get(0).get(0) - 1);
-                System.out.printf("cccc %d\n", M);
-            }
-        }
-        if (y != 7)
-        {
-            if (buttons[x][y+1].getText().equals(""))
-            {
-                M += (modifiedButtons(x, y+1, "O").get(0).get(0) - 1);
-                System.out.printf("dddd %d\n", M);
-            }
-        }
+    // public int enemyPossibleMove(int x, int y)
+    // {
+    //     int M = 1;
+    //     if (x != 0)
+    //     {
+    //         if (buttons[x-1][y].getText().equals(""))
+    //         {
+    //             M += (modifiedButtons(x-1, y, "O").get(0).get(0) - 1);
+    //             System.out.printf("aaaa %d\n", M);
+    //         }
+    //     }
+    //     if (x != 7)
+    //     {
+    //         if (buttons[x+1][y].getText().equals(""))
+    //         {
+    //             M += (modifiedButtons(x+1, y, "O").get(0).get(0) - 1);
+    //             System.out.printf("bbbb %d\n", M);
+    //         }
+    //     }
+    //     if (y != 0)
+    //     {
+    //         if (buttons[x][y-1].getText().equals(""))
+    //         {
+    //             M += (modifiedButtons(x, y-1, "O").get(0).get(0) - 1);
+    //             System.out.printf("cccc %d\n", M);
+    //         }
+    //     }
+    //     if (y != 7)
+    //     {
+    //         if (buttons[x][y+1].getText().equals(""))
+    //         {
+    //             M += (modifiedButtons(x, y+1, "O").get(0).get(0) - 1);
+    //             System.out.printf("dddd %d\n", M);
+    //         }
+    //     }
 
-        return M;
-    }
+    //     return M;
+    // }
 
 
 

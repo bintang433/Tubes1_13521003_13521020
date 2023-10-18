@@ -11,9 +11,11 @@ public class MiniMax extends Bot {
         String[][] copyButtons = new String[8][8];
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (getButtons()[i][j].getText().isEmpty()) {
-                    copyButtons[i][j] = getButtons()[i][j].getText();
+                if (!this.getButtons()[i][j].getText().isEmpty()) {
+                    copyButtons[i][j] = this.getButtons()[i][j].getText();
                 }
+                else
+                copyButtons[i][j] = "";
             }
         }
         ArrayList<Integer> bestMove = findBestMove(copyButtons);

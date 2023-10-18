@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public class LocalSearch extends Bot {
 
-
+    public LocalSearch(Button[][] buttons, int roundsLeft) {
+        super(buttons, roundsLeft);
+    }
 
     @Override
     public int[] move() {
@@ -18,7 +20,7 @@ public class LocalSearch extends Bot {
         {
             for(int j = 0; j < 8; j++)
             {
-                if(getButtons()[i][j].getText().equals(""))
+                if(this.getButtons()[i][j].getText().equals(""))
                 {
                     int tempObjFuncVal = objectiveFunction(i, j);
                     if (tempObjFuncVal>objFuncValue)
@@ -34,7 +36,7 @@ public class LocalSearch extends Bot {
     }
 
     public int objectiveFunction(int x, int y) {
-        ArrayList<ArrayList<Integer>> buttonCoordinates = modifiedButtons(x, y, "X");
+        ArrayList<ArrayList<Integer>> buttonCoordinates = this.modifiedButtons(x, y, "X");
         int M = 0;
         for (int i = 1; i <= buttonCoordinates.get(0).get(0); i++) {
             int coordinateM = enemyPossibleMove(buttonCoordinates.get(i).get(0), buttonCoordinates.get(i).get(1));
@@ -50,7 +52,7 @@ public class LocalSearch extends Bot {
         int M = 1;
         if (x != 0)
         {
-            if (getButtons()[x-1][y].getText().equals(""))
+            if (this.getButtons()[x-1][y].getText().equals(""))
             {
                 M += (modifiedButtons(x-1, y, "O").get(0).get(0) - 1);
                 System.out.printf("aaaa %d\n", M);
@@ -58,7 +60,7 @@ public class LocalSearch extends Bot {
         }
         if (x != 7)
         {
-            if (getButtons()[x+1][y].getText().equals(""))
+            if (this.getButtons()[x+1][y].getText().equals(""))
             {
                 M += (modifiedButtons(x+1, y, "O").get(0).get(0) - 1);
                 System.out.printf("bbbb %d\n", M);
@@ -66,7 +68,7 @@ public class LocalSearch extends Bot {
         }
         if (y != 0)
         {
-            if (getButtons()[x][y-1].getText().equals(""))
+            if (this.getButtons()[x][y-1].getText().equals(""))
             {
                 M += (modifiedButtons(x, y-1, "O").get(0).get(0) - 1);
                 System.out.printf("cccc %d\n", M);
@@ -74,7 +76,7 @@ public class LocalSearch extends Bot {
         }
         if (y != 7)
         {
-            if (getButtons()[x][y+1].getText().equals(""))
+            if (this.getButtons()[x][y+1].getText().equals(""))
             {
                 M += (modifiedButtons(x, y+1, "O").get(0).get(0) - 1);
                 System.out.printf("dddd %d\n", M);
@@ -83,5 +85,7 @@ public class LocalSearch extends Bot {
 
         return M;
     }
+
+    
 
 }
