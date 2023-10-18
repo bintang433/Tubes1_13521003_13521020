@@ -49,6 +49,8 @@ public class OutputFrameController {
     private int playerXScore;
     private int playerOScore;
     private int roundsLeft;
+
+    private String self ;
     private boolean isBotFirst;
     private Bot bot1;
     private Bot bot2;
@@ -82,16 +84,29 @@ public class OutputFrameController {
         this.bot2SelectedAlgorithm = bot2SelectedAlgorithm;
 
         // Start bot1
-        this.bot1 = new Bot(buttons, roundsLeft);
+        if (this.bot1SelectedAlgorithm==0)
+        this.bot1 = new LocalSearch(buttons, roundsLeft, "O");
+        else if (this.bot1SelectedAlgorithm==1)
+        this.bot1 = new MiniMax(buttons, roundsLeft, "O");
+        else
+        this.bot1 = new Bot(buttons, roundsLeft, "O");
+        
         if (this.bot2SelectedAlgorithm != 3)
-        this.bot2 = new Bot(buttons, roundsLeft);
+        {
+            if (this.bot2SelectedAlgorithm==0)
+            this.bot2 = new LocalSearch(buttons, roundsLeft, "X");
+            else if (this.bot2SelectedAlgorithm==1)
+            this.bot2 = new MiniMax(buttons, roundsLeft, "X");
+            else
+            this.bot2 = new Bot(buttons, roundsLeft,  "X");
+        }
         this.playerXTurn = !isBotFirst;
 
         if (this.isBotFirst) {
-            this.moveBot(1, bot1SelectedAlgorithm);
+            this.moveBot(1);
         }
         else if (this.bot2SelectedAlgorithm != 3) {
-            this.moveBot(2, bot2SelectedAlgorithm);
+            this.moveBot(2);
         }
         
     }
@@ -213,7 +228,7 @@ public class OutputFrameController {
 
                 // Bot's turn
                 else
-                this.moveBot(1, bot1SelectedAlgorithm);
+                this.moveBot(1);
             }
             else {
                 this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
@@ -235,7 +250,7 @@ public class OutputFrameController {
                 }
 
                 if(this.bot2SelectedAlgorithm!=3 && !(!isBotFirst && this.roundsLeft == 0))
-                this.moveBot(2, bot2SelectedAlgorithm);
+                this.moveBot(2);
             }
         }
     }
@@ -372,20 +387,18 @@ public class OutputFrameController {
         primaryStage.show();
     }
 
-    private void moveBot(int bot, int algorithm) {
+    private void moveBot(int bot) {
         int[] botMove;
         if (bot==1)
-            // botMove = this.bot1.move(algorithm);
             botMove = this.bot1.move();
 
         else
-            // botMove = this.bot2.move(algorithm);
             botMove = this.bot2.move();
 
         int i = botMove[0];
         int j = botMove[1];
 
-        if (!this.buttons[i][j].getText().equals("")) {
+        if (!this.buttons[i][j].getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
             System.exit(1);
             return;

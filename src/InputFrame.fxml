@@ -47,7 +47,7 @@
             <children>
                 <RadioButton text="Local Search" fx:id="bot1LocalSearch" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
                 <RadioButton text="Minimax" fx:id="bot1Minimax" GridPane.rowIndex="4" GridPane.columnIndex="3"/>
-                <RadioButton text="Genetic" fx:id="bot1Genetic" GridPane.rowIndex="4" GridPane.columnIndex="4"/>
+                <RadioButton text="Random Move" fx:id="bot1Genetic" GridPane.rowIndex="4" GridPane.columnIndex="4"/>
             </children>
 
             <Label text="Bot2 algorithm: " GridPane.rowIndex="5" GridPane.columnIndex="0">
@@ -59,7 +59,7 @@
                 <RadioButton text="Player vs Bot" fx:id="playervsbot" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
                 <RadioButton text="Local Search" fx:id="bot2LocalSearch" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
                 <RadioButton text="Minimax" fx:id="bot2Minimax" GridPane.rowIndex="5" GridPane.columnIndex="3"/>
-                <RadioButton text="Genetic" fx:id="bot2Genetic" GridPane.rowIndex="5" GridPane.columnIndex="4"/>
+                <RadioButton text="Random Move" fx:id="bot2Genetic" GridPane.rowIndex="5" GridPane.columnIndex="4"/>
             </children>
         </GridPane>
     </top>
