@@ -22,14 +22,19 @@ public class Bot {
 
     private Button[][] buttons;
     private int roundsLeft;
-
-    public Bot(Button[][] buttons, int roundsLeft) {
+    private String chr ;
+    public Bot(Button[][] buttons, int roundsLeft, String chr) {
         this.buttons = buttons;
         this.roundsLeft = roundsLeft;
+        this.chr = chr ;
     }
 
     public void roundPassed() {
         this.roundsLeft--;
+    }
+
+    public String getChr(){
+        return this.chr ;
     }
 
     public Button[][] getButtons() {

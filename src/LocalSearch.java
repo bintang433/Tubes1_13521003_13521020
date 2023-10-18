@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class LocalSearch extends Bot {
 
-    public LocalSearch(Button[][] buttons, int roundsLeft) {
-        super(buttons, roundsLeft);
+    public LocalSearch(Button[][] buttons, int roundsLeft, String chr) {
+        super(buttons, roundsLeft, chr);
     }
 
     @Override
