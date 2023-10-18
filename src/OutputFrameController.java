@@ -50,7 +50,10 @@ public class OutputFrameController {
     private int playerOScore;
     private int roundsLeft;
     private boolean isBotFirst;
-    private Bot bot;
+    private Bot bot1;
+    private Bot bot2;
+    private int bot1SelectedAlgorithm;
+    private int bot2SelectedAlgorithm;
 
 
     private static final int ROW = 8;
@@ -59,29 +62,38 @@ public class OutputFrameController {
 
 
     /**
-     * Set the name of player X (player) to be name1, set the name of player O (bot) to be name2,
+     * Set the name of player X (player) to be name1, set the name of player O (bot1) to be name2,
      * and the number of rounds played to be rounds. This input is received from
      * the input frame and is output in the score board of the output frame.
      *
      * @param name1 Name of Player 1 (Player).
      * @param name2 Name of Player 2 (Bot).
      * @param rounds The number of rounds chosen to be played.
-     * @param isBotFirst True if bot is first, false otherwise.
+     * @param isBotFirst True if bot1 is first, false otherwise.
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst){
+    void getInput(String name1, String name2, String rounds, boolean isBotFirst, int bot1SelectedAlgorithm, int bot2SelectedAlgorithm){
         this.playerXName.setText(name1);
         this.playerOName.setText(name2);
         this.roundsLeftLabel.setText(rounds);
         this.roundsLeft = Integer.parseInt(rounds);
         this.isBotFirst = isBotFirst;
+        this.bot1SelectedAlgorithm = bot1SelectedAlgorithm;
+        this.bot2SelectedAlgorithm = bot2SelectedAlgorithm;
 
-        // Start bot
-        this.bot = new Bot(buttons, roundsLeft);
+        // Start bot1
+        this.bot1 = new Bot(buttons, roundsLeft);
+        if (this.bot2SelectedAlgorithm != 3)
+        this.bot2 = new Bot(buttons, roundsLeft);
         this.playerXTurn = !isBotFirst;
+
         if (this.isBotFirst) {
-            this.moveBot();
+            this.moveBot(1, bot1SelectedAlgorithm);
         }
+        else if (this.bot2SelectedAlgorithm != 3) {
+            this.moveBot(2, bot2SelectedAlgorithm);
+        }
+        
     }
 
 
@@ -159,6 +171,8 @@ public class OutputFrameController {
         this.playerXTurn = true;
         this.playerXScore = 4;
         this.playerOScore = 4;
+
+        
     }
 
 
@@ -189,7 +203,7 @@ public class OutputFrameController {
 
                 if (isBotFirst) {
                     this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
-                    this.bot.roundPassed();
+                    this.bot1.roundPassed();
                     this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
                 }
 
@@ -198,7 +212,8 @@ public class OutputFrameController {
                 }
 
                 // Bot's turn
-                this.moveBot();
+                else
+                this.moveBot(1, bot1SelectedAlgorithm);
             }
             else {
                 this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
@@ -211,13 +226,16 @@ public class OutputFrameController {
 
                 if (!isBotFirst) {
                     this.roundsLeft--; // Decrement the number of rounds left after both Player X & Player O have played.
-                    this.bot.roundPassed();
+                    this.bot1.roundPassed();
                     this.roundsLeftLabel.setText(String.valueOf(this.roundsLeft));
                 }
 
                 if (!isBotFirst && this.roundsLeft == 0) { // Game has terminated.
                     this.endOfGame();       // Determine & announce the winner.
                 }
+
+                if(this.bot2SelectedAlgorithm!=3 && !(!isBotFirst && this.roundsLeft == 0))
+                this.moveBot(2, bot2SelectedAlgorithm);
             }
         }
     }
@@ -294,7 +312,7 @@ public class OutputFrameController {
         // Player X is the winner.
         if (this.playerXScore > this.playerOScore) {
             new Alert(Alert.AlertType.INFORMATION,
-                    this.playerXName.getText() + " has won the game!").showAndWait();
+            this.playerXName.getText() + " has won the game!").showAndWait();
             this.playerXBoxPane.setStyle("-fx-background-color: CYAN; -fx-border-color: #D3D3D3;");
             this.playerOBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
             this.playerXName.setText(this.playerXName.getText() + " (Winner!)");
@@ -354,9 +372,15 @@ public class OutputFrameController {
         primaryStage.show();
     }
 
-    private void moveBot() {
-        // int[] botMove = this.bot.move();
-        int[] botMove = this.bot.moveMinimax();
+    private void moveBot(int bot, int algorithm) {
+        int[] botMove;
+        if (bot==1)
+            // botMove = this.bot1.move(algorithm);
+            botMove = this.bot1.move();
+
+        else
+            // botMove = this.bot2.move(algorithm);
+            botMove = this.bot2.move();
 
         int i = botMove[0];
         int j = botMove[1];
@@ -368,8 +392,8 @@ public class OutputFrameController {
         }
 
         // while (!this.buttons[i][j].getText().equals("")) {
-        //     botMove = this.bot.move();
-        //     // int[] botMove = this.bot.moveMinimax();
+        //     botMove = this.bot1.move();
+        //     // int[] botMove = this.bot1.moveMinimax();
 
         //     i = botMove[0];
         //     j = botMove[1];

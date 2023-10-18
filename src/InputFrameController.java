@@ -7,6 +7,8 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +34,34 @@ public class InputFrameController{
     @FXML
     private ComboBox<String> numberOfRounds;
 
+    @FXML
+    private RadioButton bot1LocalSearch;
+    
+    @FXML
+    private RadioButton bot1Minimax;
+    
+    @FXML
+    private RadioButton bot1Genetic;
 
+    @FXML
+    private RadioButton playervsbot;
+
+    @FXML
+    private RadioButton bot2LocalSearch;
+    
+    @FXML
+    private RadioButton bot2Minimax;
+    
+    @FXML
+    private RadioButton bot2Genetic;
+    
+    private ToggleGroup toggleGroup1;
+
+    private ToggleGroup toggleGroup2;
+
+    private int bot1SelectedAlgorithm;
+
+    private int bot2SelectedAlgorithm;
     /**
      * Initialize the dropdown ComboBox with a list of items that are allowed to be selected.
      * Select the first item in the list as the default value of the dropdown.
@@ -45,6 +74,22 @@ public class InputFrameController{
                 "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28");
         this.numberOfRounds.setItems(numberOfRoundsDropdown);
         this.numberOfRounds.getSelectionModel().select(0);
+
+        toggleGroup1 = new ToggleGroup();
+        bot1LocalSearch.setToggleGroup(toggleGroup1);
+        bot1Minimax.setToggleGroup(toggleGroup1);
+        bot1Genetic.setToggleGroup(toggleGroup1);
+        
+        bot1LocalSearch.setSelected(true);
+
+        toggleGroup2 = new ToggleGroup();
+        playervsbot.setToggleGroup(toggleGroup2);
+        bot2LocalSearch.setToggleGroup(toggleGroup2);
+        bot2Minimax.setToggleGroup(toggleGroup2);
+        bot2Genetic.setToggleGroup(toggleGroup2);
+
+        playervsbot.setSelected(true);
+
     }
 
 
@@ -58,6 +103,10 @@ public class InputFrameController{
         this.player1.setText("");
         this.player2.setText("");
         this.numberOfRounds.getSelectionModel().select(0);
+        bot1LocalSearch.setSelected(true);
+        playervsbot.setSelected(true);
+
+
     }
 
 
@@ -80,7 +129,22 @@ public class InputFrameController{
 
             // Get controller of output frame and pass input including player names and number of rounds chosen.
             OutputFrameController outputFC = loader.getController();
-            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected());
+            if(this.bot1LocalSearch.isSelected())
+            this.bot1SelectedAlgorithm = 0;
+            else if(this.bot1Minimax.isSelected())
+            this.bot1SelectedAlgorithm = 1;
+            else
+            this.bot1SelectedAlgorithm = 2;
+
+            if(this.playervsbot.isSelected())
+            this.bot2SelectedAlgorithm = 3;
+            else if(this.bot2LocalSearch.isSelected())
+            this.bot2SelectedAlgorithm = 0;
+            else if(this.bot2Minimax.isSelected())
+            this.bot2SelectedAlgorithm = 1;
+            else
+            this.bot2SelectedAlgorithm = 2;
+            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected(), this.bot1SelectedAlgorithm, this.bot2SelectedAlgorithm);
 
             // Open the new frame.
             Stage secondaryStage = new Stage();

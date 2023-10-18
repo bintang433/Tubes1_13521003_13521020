@@ -32,12 +32,35 @@
             </Label>
             <ComboBox fx:id="numberOfRounds" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity" />
 
-            <Label text="Bot goes first: " GridPane.rowIndex="3" GridPane.columnIndex="0">
+            <Label text="Bot1 goes first: " GridPane.rowIndex="3" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
             <CheckBox fx:id="isBotFirst" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <Label text="Bot1 algorithm: " GridPane.rowIndex="4" GridPane.columnIndex="0">
+                <font>
+                    <Font name="Arial Bold" size="12"/>
+                </font>
+            </Label>
+            <children>
+                <RadioButton text="Local Search" fx:id="bot1LocalSearch" GridPane.rowIndex="4" GridPane.columnIndex="2"/>
+                <RadioButton text="Minimax" fx:id="bot1Minimax" GridPane.rowIndex="4" GridPane.columnIndex="3"/>
+                <RadioButton text="Genetic" fx:id="bot1Genetic" GridPane.rowIndex="4" GridPane.columnIndex="4"/>
+            </children>
+
+            <Label text="Bot2 algorithm: " GridPane.rowIndex="5" GridPane.columnIndex="0">
+                <font>
+                    <Font name="Arial Bold" size="12"/>
+                </font>
+            </Label>
+            <children>
+                <RadioButton text="Player vs Bot" fx:id="playervsbot" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+                <RadioButton text="Local Search" fx:id="bot2LocalSearch" GridPane.rowIndex="5" GridPane.columnIndex="2"/>
+                <RadioButton text="Minimax" fx:id="bot2Minimax" GridPane.rowIndex="5" GridPane.columnIndex="3"/>
+                <RadioButton text="Genetic" fx:id="bot2Genetic" GridPane.rowIndex="5" GridPane.columnIndex="4"/>
+            </children>
         </GridPane>
     </top>
 
