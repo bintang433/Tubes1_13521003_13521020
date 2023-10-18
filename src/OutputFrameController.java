@@ -385,7 +385,7 @@ public class OutputFrameController {
         int i = botMove[0];
         int j = botMove[1];
 
-        if (!this.buttons[i][j].getText().equals("")) {
+        if (!this.buttons[i][j].getText().isEmpty()) {
             new Alert(Alert.AlertType.ERROR, "Bot Invalid Coordinates. Exiting.").showAndWait();
             System.exit(1);
             return;
