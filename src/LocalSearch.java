@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class LocalSearch extends Bot {
 
-    public LocalSearch(Button[][] buttons, int roundsLeft, String chr) {
-        super(buttons, roundsLeft, chr);
+    public LocalSearch(Button[][] buttons, int roundsLeft, String self) {
+        super(buttons, roundsLeft, self);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class LocalSearch extends Bot {
     }
 
     public int objectiveFunction(int x, int y) {
-        ArrayList<ArrayList<Integer>> buttonCoordinates = this.modifiedButtons(x, y, "X");
+        ArrayList<ArrayList<Integer>> buttonCoordinates = this.modifiedButtons(x, y, this.getOpp());
         int M = 0;
         for (int i = 1; i <= buttonCoordinates.get(0).get(0); i++) {
             int coordinateM = enemyPossibleMove(buttonCoordinates.get(i).get(0), buttonCoordinates.get(i).get(1));
@@ -54,7 +54,7 @@ public class LocalSearch extends Bot {
         {
             if (this.getButtons()[x-1][y].getText().equals(""))
             {
-                M += (modifiedButtons(x-1, y, "O").get(0).get(0) - 1);
+                M += (modifiedButtons(x-1, y, this.getSelf()).get(0).get(0) - 1);
                 System.out.printf("aaaa %d\n", M);
             }
         }
@@ -62,7 +62,7 @@ public class LocalSearch extends Bot {
         {
             if (this.getButtons()[x+1][y].getText().equals(""))
             {
-                M += (modifiedButtons(x+1, y, "O").get(0).get(0) - 1);
+                M += (modifiedButtons(x+1, y, this.getSelf()).get(0).get(0) - 1);
                 System.out.printf("bbbb %d\n", M);
             }
         }
@@ -70,7 +70,7 @@ public class LocalSearch extends Bot {
         {
             if (this.getButtons()[x][y-1].getText().equals(""))
             {
-                M += (modifiedButtons(x, y-1, "O").get(0).get(0) - 1);
+                M += (modifiedButtons(x, y-1, this.getSelf()).get(0).get(0) - 1);
                 System.out.printf("cccc %d\n", M);
             }
         }
@@ -78,7 +78,7 @@ public class LocalSearch extends Bot {
         {
             if (this.getButtons()[x][y+1].getText().equals(""))
             {
-                M += (modifiedButtons(x, y+1, "O").get(0).get(0) - 1);
+                M += (modifiedButtons(x, y+1, this.getSelf()).get(0).get(0) - 1);
                 System.out.printf("dddd %d\n", M);
             }
         }

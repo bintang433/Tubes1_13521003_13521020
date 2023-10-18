@@ -22,19 +22,26 @@ public class Bot {
 
     private Button[][] buttons;
     private int roundsLeft;
-    private String chr ;
-    public Bot(Button[][] buttons, int roundsLeft, String chr) {
+    private String self;
+    private String opp;
+
+    public Bot(Button[][] buttons, int roundsLeft, String self) {
         this.buttons = buttons;
         this.roundsLeft = roundsLeft;
-        this.chr = chr ;
+        this.self = self;
+        this.opp = this.self == "X" ? "O" : "X";
     }
 
     public void roundPassed() {
         this.roundsLeft--;
     }
 
-    public String getChr(){
-        return this.chr ;
+    public String getSelf(){
+        return this.self ;
+    }
+
+    public String getOpp(){
+        return this.opp ;
     }
 
     public Button[][] getButtons() {
@@ -48,8 +55,14 @@ public class Bot {
 
     public int[] move() {
         // // create random move
-        // int x = (int) (Math.random()*8);
-        // int y = (int) (Math.random()*8);
+        int x = (int) (Math.random()*8);
+        int y = (int) (Math.random()*8);
+
+        while (!buttons[x][y].getText().equals(""))
+        {
+            x = (int) (Math.random()*8);
+            y = (int) (Math.random()*8);
+        }
         // // int x = ;
         // // int y;
         // int objFuncValue = -999;

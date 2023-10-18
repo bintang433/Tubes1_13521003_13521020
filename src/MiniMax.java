@@ -4,8 +4,8 @@ import java.util.Objects;
 
 //import java.util.Collections;
 public class MiniMax extends Bot {
-    public MiniMax(Button[][] buttons, int roundsLeft, String chr) {
-        super(buttons, roundsLeft, chr);
+    public MiniMax(Button[][] buttons, int roundsLeft, String self) {
+        super(buttons, roundsLeft, self);
     }
 
     @Override
@@ -21,7 +21,6 @@ public class MiniMax extends Bot {
             }
         }
         ArrayList<Integer> bestMove = findBestMove(copyButtons);
-//        Collections.shuffle(bestMove);
         return new int[]{bestMove.get(0), bestMove.get(1)};
     }
 
@@ -37,16 +36,15 @@ public class MiniMax extends Bot {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (copyButtons[i][j].equals("")) {
-                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, getChr());
+                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, this.getOpp());
                         for (int k = 1; k < changedButtons.get(0).get(0); k++) {
-                            if (Objects.equals(getChr(), "X")){
-                                copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
-                            } else if (Objects.equals(getChr(), "O")) {
-                                copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
-                            }
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getSelf();
                         }
                         maxVal = Math.max(maxVal, minimax(copyButtons, curDepth + 1, !maximize, alpha, beta));
 
+                        for (int k = 1; k < changedButtons.get(0).get(0); k++) {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getOpp();
+                        }
                         copyButtons[i][j] = "";
 
                         alpha = Math.max(alpha, maxVal);
@@ -62,15 +60,14 @@ public class MiniMax extends Bot {
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
                     if (copyButtons[i][j].equals("")) {
-                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, "O");
+                        ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, this.getSelf());
                         for (int k = 1; k < changedButtons.get(0).get(0); k++) {
-                            if (Objects.equals(getChr(), "X")){
-                                copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
-                            } else if (Objects.equals(getChr(), "O")) {
-                                copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
-                            }
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getOpp();
                         }
                         minVal = Math.min(minVal, minimax(copyButtons, curDepth + 1, !maximize, alpha, beta));
+                        for (int k = 1; k < changedButtons.get(0).get(0); k++) {
+                            copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getSelf();
+                        }
 
                         copyButtons[i][j] = "";
 
@@ -98,7 +95,8 @@ public class MiniMax extends Bot {
             }
         }
         System.out.printf("O = %d, X = %d\n", O, X);
-        return O - X;
+
+        return this.getSelf() == "O" ? (O - X) : (X-O);
     }
 
     public ArrayList<Integer> findBestMove(String[][] copyButtons)
@@ -113,16 +111,15 @@ public class MiniMax extends Bot {
             {
                 if (copyButtons[i][j].equals(""))
                 {
-                    // copyButtons[i][j] = "O";
-                    ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, "X");
+                    ArrayList<ArrayList<Integer>> changedButtons = modifiedButtons(i, j, this.getOpp());
                     for(int k = 1; k < changedButtons.get(0).get(0); k++)
                     {
-                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "O";
+                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getSelf();
                     }
                     int tempValue = minimax(copyButtons, 0, true, -999, 999);
                     for(int k = 1; k < changedButtons.get(0).get(0); k++)
                     {
-                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = "X";
+                        copyButtons[changedButtons.get(k).get(0)][changedButtons.get(k).get(1)] = this.getOpp();
                     }
                     copyButtons[i][j] = "";
 

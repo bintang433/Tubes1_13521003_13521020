@@ -50,7 +50,7 @@ public class OutputFrameController {
     private int playerOScore;
     private int roundsLeft;
 
-    private String chr ;
+    private String self ;
     private boolean isBotFirst;
     private Bot bot1;
     private Bot bot2;
@@ -85,20 +85,20 @@ public class OutputFrameController {
 
         // Start bot1
         if (this.bot1SelectedAlgorithm==0)
-        this.bot1 = new LocalSearch(buttons, roundsLeft,chr);
+        this.bot1 = new LocalSearch(buttons, roundsLeft, "O");
         else if (this.bot1SelectedAlgorithm==1)
-        this.bot1 = new MiniMax(buttons, roundsLeft,chr);
+        this.bot1 = new MiniMax(buttons, roundsLeft, "O");
         else
-        this.bot1 = new LocalSearch(buttons, roundsLeft,chr);
+        this.bot1 = new Bot(buttons, roundsLeft, "O");
         
         if (this.bot2SelectedAlgorithm != 3)
         {
             if (this.bot2SelectedAlgorithm==0)
-            this.bot2 = new LocalSearch(buttons, roundsLeft,chr);
+            this.bot2 = new LocalSearch(buttons, roundsLeft, "X");
             else if (this.bot2SelectedAlgorithm==1)
-            this.bot2 = new MiniMax(buttons, roundsLeft,chr);
+            this.bot2 = new MiniMax(buttons, roundsLeft, "X");
             else
-            this.bot2 = new LocalSearch(buttons, roundsLeft,chr);
+            this.bot2 = new Bot(buttons, roundsLeft,  "X");
         }
         this.playerXTurn = !isBotFirst;
 
